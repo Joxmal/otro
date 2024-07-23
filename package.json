@@ -17,6 +17,7 @@
     "@vueuse/nuxt": "^10.11.0",
     "nuxt": "^3.12.3",
     "nuxt-icon-tw": "^0.1.4",
+    "nuxt-swiper": "^1.2.2",
     "pinia": "^2.1.7",
     "vue": "latest"
   },

@@ -1,5 +1,10 @@
-export const useCountStore = defineStore('CountStore', {
+
+
+
+export const useBlogStore = defineStore('BlogStore', {
     state: () => {
+
+
       return {
         count: 0,
       };
@@ -7,3 +12,5 @@ export const useCountStore = defineStore('CountStore', {
     getters: {},
     actions: {},
   });
+
+  

@@ -1,19 +1,19 @@
 <template>
   <div>
     <swiper class="black-slider h-80 cursor-pointer rounded-xl"
-    :modules="[SwiperAutoplay, SwiperEffectCreative,SwiperNavigation]"
-
+      :modules="[SwiperAutoplay, SwiperEffectCreative,SwiperNavigation]"
+      :lazy="true"
       :breakpoints= "{
-          640: {
-            slidesPerView: 1,
-          },
-          768: {
-            slidesPerView: 2,
-          },
-          1024: {
-            slidesPerView: 2,
-          },
-        }"
+        640: {
+          slidesPerView: 1,
+        },
+        768: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 2,
+        },
+      }"
       :navigation="{
         enabled: true,
       }"
@@ -32,14 +32,13 @@
           translate: ['100%', 0, 0],
         },
       }">
-      <lazy-swiper-slide
+      <swiper-slide
         class="glass h-full"
         v-for="(image, index) in images"
         :key="index">
         <img class="object-contain h-full w-full" :src="image" alt="Imagen" />
-      </lazy-swiper-slide>
-      <!-- <div class="swiper-button-next" slot="button-next"></div> -->
-      <!-- <div class="swiper-button-prev" slot="button-prev"></div> -->
+        <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+      </swiper-slide>
     </swiper>
   </div>
 </template>

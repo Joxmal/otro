@@ -1,64 +1,46 @@
 <template>
-  
   <CarruselBasic class="-z-50" />
-
   <div class="flex flex-wrap gap-2 justify-center my-12">
-    <CardCategoria v-for="categoria in categorias" :content="categoria.name" />
+
+
+    
+    <CardCategoria
+    v-for="categoria in dataCategorias" 
+    :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
+    @click="selectCategoria(categoria.name)"
+    :content="categoria.name" 
+    />
   </div>
-  <div class="hero bg-base-content">ds sadasdsaad</div>
+  <div class="hero bg-base-content">-</div>
+  
+  
 
-  <div class="flex flex-wrap gap-3 my-2">
-    <div v-for=" post in dataPosts" class="card bg-base-100 w-96 shadow-xl">
+    <!-- <div v-if="dataPostsStatus === 'pending'" >...loading</div> -->
 
-     
-      <figure>
-        <img
-          :src="post.files[0].secureUrl"
-          alt="Shoes"
+      <TransitionFade class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 md:gap-6 xl:gap-8 my-2" group tag="ul">
+
+        <CardPost
+          
+          v-for=" (post,index) in dataPosts" :key="post.title"
+          :image="post.images[0]"
+          :title="post.title"
+          :summary="post.summary"
         />
-      </figure>
-      <div  class="card-body">
-        <h2 class="card-title">
-          Shoes!
-          <div class="badge badge-secondary">NEW</div>
-        </h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div class="card-actions justify-end">
-          <div class="badge badge-outline">Fashion</div>
-          <div class="badge badge-outline">Products</div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </TransitionFade>
 
-  <div class="hero bg-base-200 py-10">
-    <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold">Hello there</h1>
-        <p class="py-6">
-          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-          excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a
-          id hola.
-        </p>
-        <button class="btn btn-primary">Get Started</button>
-      </div>
-    </div>
-  </div>
-  <div class="p-10">
-    <div class="card w-96 bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title">Shoes!</h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div class="card-actions justify-end">
-          <button class="btn btn-primary">Buy Now</button>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
+
 </template>
 
 <script setup lang="ts">
+import { TransitionFade } from '@morev/vue-transitions';
 import type { Post } from "~/types/post/postsTypes";
+
+
+const selectCategoria = (categoriaName: string) => {
+  queryCategoria.value = categoriaName;
+};
+
 
 const config = useRuntimeConfig();
 
@@ -67,20 +49,38 @@ interface Categorias {
   name: string;
 }
 
-const categorias: Ref<Categorias[] | null> = ref(null);
+const { data: dataCategorias} = await useFetch<Categorias[]>(`${config.public.NUXT_API_URL}/categorias`);
 
-const { data: dataCategorias, status: dataCategoriasStatus } = await useFetch<
-  Categorias[]
->(`${config.public.NUXT_API_URL}/categorias`);
+// cargar posts
+const queryCategoria = ref<string | undefined>(undefined);
+const fetchPosts = async () => {
+  const { data, status  } = await useFetch<Post[]>(`${config.public.NUXT_API_URL}/post`,{
+    query:{
+      categoria: queryCategoria.value
+    }
+  })
+  return {data, status}
+}
 
-categorias.value = dataCategorias.value;
+const { data: dataPosts, status: dataPostsStatus } = await fetchPosts();
 
-// cargas post
 
-const { data: dataPosts, status: dataPostStatus } = await useFetch<Post[]>(
-  `${config.public.NUXT_API_URL}/post`
-);
-console.log(dataPosts.value)
-
-onMounted(async () => {});
+watch(queryCategoria, async (newCategoria) => {
+  // Reenvía la petición cuando cambia la categoría
+  const { data, status } = await fetchPosts();
+  dataPosts.value = data.value; // Actualiza los posts
+  dataPostsStatus.value = status.value; // Actualiza el estado
+});
 </script>
+
+<!-- <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style> -->

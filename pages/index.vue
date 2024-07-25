@@ -14,11 +14,12 @@
   <div class="hero bg-base-content">-</div>
   
   
+  <div class="min-h-72">
 
     <!-- <div v-if="dataPostsStatus === 'pending'" >...loading</div> -->
 
-      <TransitionFade class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 md:gap-6 xl:gap-8 my-2" group tag="ul">
 
+      <TransitionFade class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 md:gap-6 xl:gap-8 my-2" group tag="ul">
         <CardPost
           
           v-for=" (post,index) in dataPosts" :key="post.title"
@@ -27,6 +28,7 @@
           :summary="post.summary"
         />
       </TransitionFade>
+  </div>
 
  
 

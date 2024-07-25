@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   runtimeConfig:{
     public:{
-      NUXT_API_URL:'http://[::1]:3009/api'
+      NUXT_API_URL:'http://192.168.31.119:3009/api'
     }
   },
   compatibilityDate: '2024-04-03',

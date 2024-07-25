@@ -1,5 +1,5 @@
 <template>
-        <div class="group card bg-base-300 shadow-md border border-primary hover:shadow-pink-500 hover:cursor-pointer w-full">
+  <div class="group card bg-base-300 shadow-md border border-primary hover:shadow-pink-500 hover:cursor-pointer w-full">
         <figure class="" >
           <img
           :src="props.image"

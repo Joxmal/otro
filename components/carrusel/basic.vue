@@ -1,6 +1,6 @@
 <template>
   <div>
-    <swiper class="black-slider h-80 cursor-pointer rounded-xl"
+    <swiper class="black-slider border h-80 cursor-pointer rounded-xl"
       :modules="[SwiperAutoplay, SwiperEffectCreative,SwiperNavigation]"
       :lazy="true"
       :breakpoints= "{
@@ -34,7 +34,7 @@
       }">
       <swiper-slide
         class="glass h-full"
-        v-for="(image, index) in images"
+        v-for="(image, index) in props.images"
         :key="index">
         <img class="object-contain h-full w-full" :src="image" alt="Imagen" />
         <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
@@ -43,7 +43,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
+const props = defineProps({
+  images:{
+    type: Array as () => string[],
+    default: [
+    "https://th.bing.com/th/id/OIP.PUKoIDMPwtgUl9SBCil-mwHaG1?rs=1&pid=ImgDetMain",
+    "https://ultimasnoticias.com.ve/wp-content/uploads/2021/11/IMG_27112021_152148_768_x_573_pixel.jpg",
+    "https://th.bing.com/th/id/OIP.kylTA--ySRdeWPskGKH7WwHaEK?rs=1&pid=ImgDetMain",
+    'https://th.bing.com/th/id/OIP.3nwtc4DKMx5CK-84VY4tTQHaFj?rs=1&pid=ImgDetMain',
+    'https://th.bing.com/th/id/OIP.3nwtc4DKMx5CK-84VY4tTQHaFj?rs=1&pid=ImgDetMain',
+    ]
+    
+  }
+})
 
 const swiperOptions={
   modules: [SwiperAutoplay, SwiperEffectCreative,SwiperNavigation],
@@ -67,14 +81,6 @@ const swiperOptions={
       }
     }
   }
-
-const images = [
-  "https://th.bing.com/th/id/OIP.PUKoIDMPwtgUl9SBCil-mwHaG1?rs=1&pid=ImgDetMain",
-  "https://ultimasnoticias.com.ve/wp-content/uploads/2021/11/IMG_27112021_152148_768_x_573_pixel.jpg",
-  "https://th.bing.com/th/id/OIP.kylTA--ySRdeWPskGKH7WwHaEK?rs=1&pid=ImgDetMain",
-  'https://th.bing.com/th/id/OIP.3nwtc4DKMx5CK-84VY4tTQHaFj?rs=1&pid=ImgDetMain',
-  'https://th.bing.com/th/id/OIP.3nwtc4DKMx5CK-84VY4tTQHaFj?rs=1&pid=ImgDetMain',
-];
 </script>
 
 <style scoped>

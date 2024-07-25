@@ -1,9 +1,8 @@
 <template>
+
   <CarruselBasic class="-z-50" />
   <div class="flex flex-wrap gap-2 justify-center my-12">
 
-
-    
     <CardCategoria
     v-for="categoria in dataCategorias" 
     :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
@@ -21,8 +20,8 @@
 
       <TransitionFade class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 md:gap-6 xl:gap-8 my-2" group tag="ul">
         <CardPost
-          
-          v-for=" (post,index) in dataPosts" :key="post.title"
+        v-for=" (post,index) in dataPosts" :key="post.title"
+          @click="moverseAlPost(post.title,post.id)"
           :image="post.images[0]"
           :title="post.title"
           :summary="post.summary"
@@ -37,6 +36,7 @@
 <script setup lang="ts">
 import { TransitionFade } from '@morev/vue-transitions';
 import type { Post } from "~/types/post/postsTypes";
+const route = useRouter()
 
 
 const selectCategoria = (categoriaName: string) => {
@@ -59,7 +59,8 @@ const fetchPosts = async () => {
   const { data, status  } = await useFetch<Post[]>(`${config.public.NUXT_API_URL}/post`,{
     query:{
       categoria: queryCategoria.value
-    }
+    },
+    lazy:true
   })
   return {data, status}
 }
@@ -73,6 +74,12 @@ watch(queryCategoria, async (newCategoria) => {
   dataPosts.value = data.value; // Actualiza los posts
   dataPostsStatus.value = status.value; // Actualiza el estado
 });
+
+function moverseAlPost(category:string,id:number){
+  route.push(`post/${category}/${id}`)
+}
+
+
 </script>
 
 <!-- <style>

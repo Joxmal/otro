@@ -1,5 +1,6 @@
 <template>
-
+{{ `${config.public.NUXT_API_URL}/post/${queryCategoria}` }}
+{{queryCategoria}}
   <CarruselBasic class="-z-50" />
   <div class="flex flex-wrap gap-2 justify-center my-12">
 

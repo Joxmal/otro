@@ -1,8 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+const imageLocation:any= "/images/tube-spinner.svg"
+
 export default defineNuxtConfig({
   runtimeConfig:{
     public:{
-      NUXT_API_URL:'http://10.0.13.148:3009/api'
+      NUXT_API_URL:'http://localhost:3009/api'
     }
   },
   compatibilityDate: '2024-04-03',
@@ -49,7 +52,7 @@ swiper: {
     directiveOnly: false,
     
 
-    
+    defaultImage: imageLocation,
   
     // To remove class set value to false
     loadingClass: 'isLoading',

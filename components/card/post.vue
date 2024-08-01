@@ -23,7 +23,6 @@
 const props= defineProps({
     image:{
         type:String,
-        default:'/images/default-image.jpg'
     },
     title:{
         type:String,

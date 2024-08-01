@@ -10,18 +10,29 @@
   <div class="skeleton h-4 w-full"></div>
 </div>
 
-<div v-if="dataPostsStatus === 'success'">
 
   <h4 class="text-6xl text-center my-4"> {{ dataPosts?.title}}</h4>
+  <div class="">
+    <div class="">
+      <LazyClientOnly>
+        <img :src="dataPosts?.images[dataPosts?.images.length-1]" alt="img" class="w-full sm:w-fit sm:float-right h-40 object-cover pl-2 rounded-badge">
+        <p v-for="parrafo in dataPosts?.content" class="text-wrap">
+          {{ parrafo }}
+        </p>
+      </LazyClientOnly>
+    </div>
 
-  <p class="text-wrap">
-    {{ dataPosts?.content }}
-  </p>
-</div>
-
-
-
-
+    <!-- <div class="bg-red-700 w-full    md:col-span-1">  
+      <figure class="px-4" >
+        <img
+        :src="dataPosts?.images[0]"
+        alt="Shoes"
+        class=" h-40 w-full object-cover group-hover:scale-125 transition-all duration-500 "
+        />
+      </figure>
+    </div> -->
+    
+  </div>
     
 </template>
 
@@ -33,16 +44,22 @@ const config = useRuntimeConfig();
 const route = useRoute()
 
 const queryCategoria = ref<string | undefined>(undefined);
+const parrafos:any = ref()
 const fetchPosts = async () => {
-  const { data, status  } = await useFetch<Post>(`${config.public.NUXT_API_URL}/post/${route.params.id}`,{
+  const { data, status,error  } = await useFetch<Post>(`${config.public.NUXT_API_URL}/post/${route.params.id}`,{
     query:{
       categoria: queryCategoria.value
     },
   })
-  return {data, status}
+
+  parrafos.value = data.value?.content
+  return {data, status, error}
 }
 
-const { data: dataPosts, status: dataPostsStatus } = await fetchPosts();
+const { data: dataPosts, status: dataPostsStatus, error:errorDataPoST } = await fetchPosts();
 
+onMounted(()=>{
+
+})
 
 </script>

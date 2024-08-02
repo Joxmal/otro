@@ -1,5 +1,8 @@
 <template>
     dasboard
+    <hr>
+    <AdminLogout/>
+    <hr>
 
     <div v-if="loggedIn">
       {{ token }}

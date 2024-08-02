@@ -1,15 +1,19 @@
 <template>
-
-
-    <button @click="login" class="btn btn-success"> iniciar seccion</button>
-    <button @click="login2" class="btn btn-success"> iniciar seccion 2</button>
-    <button @click="login3" class="btn btn-success"> iniciar seccion 3</button>
-
-    authdata: {{ authdata }}
+  <div  class=" flex text-center justify-center" >
+    <Icon name="uim:key-skeleton" size="40"></Icon>
+    <p class="text-red-500" v-show="invalidSession">
+      Error al iniciar session
+    </p>
+  </div>
+  <div class="flex justify-center">
+    <AdminLogin
+      @dataLogin="login"
+    />
+  </div>
 </template>
 
 
-<script setup>
+<script setup >
 definePageMeta({
     layout:'default',
     middleware: 'guest'
@@ -17,17 +21,20 @@ definePageMeta({
 
 
 const { $jwtAuth } = useNuxtApp()
-const router = useRouter()
 
 const authdata = ref()
 
-async function login3() {
+const invalidSession = ref(false)
+
+async function login(data) {
+  console.log("data",data)
+  invalidSession.value = false
   try {
     await $jwtAuth.login(
       {
-        name: 'admin',
-        password: 'admin123'
-      },
+        name : data.user,
+        password: data.password
+      } ,
       // optional callback function
       (data) => {
         console.log(data)
@@ -35,47 +42,10 @@ async function login3() {
       }
     )
   } catch (e) {
-    // your error handling
-  }
-}
-
-
-async function login() {
-
-  try {
-    alert('iniciando')
-    const data = await $jwtAuth.fetch('/auth',{
-        method:'POST',
-        body: JSON.stringify({ name: 'admin', password: 'admin123' })
-    })
-
-    console.log(data)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-
-async function login2() {
-  try {
-    const response = await fetch('http://localhost:3009/api/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: 'admin', password: 'admin123' })
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      authdata.value = data
-    } else {
-      console.log('Error en la solicitud');
+    console.error(e)
+    if(e.statusCode === 403){
+    invalidSession.value = true
     }
-  } catch (error) {
-    console.log(error);
   }
 }
-
 </script>

@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     dirs: ['stores'],
   },
   modules: [
+    'nuxt-jwt-auth', //<------
     'nuxt-lazy-load',
     '@morev/vue-transitions/nuxt',
     'nuxt-icon-tw',
@@ -61,6 +62,20 @@ swiper: {
     
     observerConfig: {
       // See IntersectionObserver documentation
+    }
+  },
+  nuxtJwtAuth: {
+    baseUrl: 'http://localhost:3009/api', // URL of your backend
+    endpoints: {
+      login: '/auth', // Where to request login (POST)
+      logout: '/logout', // Where to request logout (POST)
+      user: '/user', // Where to request user data (GET)
+      signup: '/signup' // Where to request signup (POST)
+    },
+    redirects: {
+      home: '/admin/dasboard', // Where to redirect after successfull login and logout
+      login: '/admin/login', // Where to redirect if user is not logged in and accesses a logged-only route
+      logout: '/logout' // Where to redirect if user is logged in and accesses a guest-only route 
     }
   }
 })

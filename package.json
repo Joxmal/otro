@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@canopassoftware/vue-file-upload": "^1.0.8",
     "@morev/vue-transitions": "^3.0.2",
     "@nuxt/icon": "^1.1.1",
     "@nuxt/image": "^1.7.0",

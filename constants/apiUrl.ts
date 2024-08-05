@@ -1,0 +1,1 @@
+export const APIURL = useRuntimeConfig().public.NUXT_API_URL;

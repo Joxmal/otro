@@ -12,9 +12,7 @@
 
 
 <script setup lang="ts">
-definePageMeta({
-    layout:'default',
-})
+
 
 
 const { $jwtAuth } = useNuxtApp()

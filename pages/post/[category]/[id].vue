@@ -2,7 +2,6 @@
 
 <CarruselBasic :images="dataPosts?.images" class="-z-50" />
 
-
 <div v-if="dataPostsStatus === 'pending'" class="flex flex-col gap-4 mt-2">
   <div class="skeleton h-32 w-full"></div>
   <div class="skeleton h-4 w-28"></div>

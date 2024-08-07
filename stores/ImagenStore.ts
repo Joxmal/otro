@@ -4,11 +4,7 @@ export const useImagenStore = defineStore('ImagenStore', {
     state: () => ({
       contador_reload: 0,
 
-
       nombreGrupoImagen: '',
-
-
-  
     }),
     getters: {},
     actions: {

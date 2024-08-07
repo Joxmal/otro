@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       NUXT_API_URL:'http://localhost:3009/api'
     }
   },
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-08-06',
   devtools: { enabled: true },
   imports: {
     dirs: ['stores'],

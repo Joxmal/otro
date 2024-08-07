@@ -69,4 +69,16 @@
 definePageMeta({
   middleware: "auth",
 });
+
+const dataToSend:Ref<Object> = ref({
+  title:'',
+  content:[{}],
+  summary:'',
+  published:false,
+  images:[],
+  template:1,
+  authorID:null,
+  filesPost:[],
+  cooperador:[]
+})
 </script>

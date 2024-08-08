@@ -91,10 +91,6 @@
 import { MultipleFileUpload } from '@canopassoftware/vue-file-upload'
 import "@canopassoftware/vue-file-upload/style.css"
 
-definePageMeta({
-  middleware: 'auth'
-})
-
 const store = useImagenStore()
 
 const uploadedFiles = ref([]);

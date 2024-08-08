@@ -24,6 +24,5 @@ interface User {
 }  
 
 const { user, loggedIn, token } = await useJwtAuth<User>()
-  console.log('user name is', user.value)
 
 </script>

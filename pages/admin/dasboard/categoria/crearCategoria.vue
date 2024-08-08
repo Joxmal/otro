@@ -48,13 +48,6 @@
 <script setup lang="ts">
 import type { Categorias } from '~/stores/CrearCategoria';
 
-
-definePageMeta({
-  middleware: 'auth'
-})
-
-
-
 const storeCategoria = useCategoriaStore()
 const dataToSend = ref({
   name:''

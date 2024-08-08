@@ -4,7 +4,16 @@ const imageLocation:any= "/images/tube-spinner.svg"
 
 export default defineNuxtConfig({
   routeRules:{
-    '/admin/**': { ssr: false },
+    '/admin/**': { 
+      ssr: false, 
+      appMiddleware : ['jwt-auth']
+    },
+
+    '/admin/dasboard/**': { 
+      //@ts-ignore
+      appMiddleware : ['auth']
+    },
+    
   },
 
   runtimeConfig:{

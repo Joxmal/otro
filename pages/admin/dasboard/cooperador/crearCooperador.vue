@@ -37,35 +37,49 @@
   
       <select v-model="formDataToSend.tipo" class="select select-bordered text-base text-primary">
         <option class="" disabled selected>Tipo Colaborador</option>
-        <option value="C">colaborador</option>
+        <option selected value="C">colaborador</option>
         <option value="P">patrocinador</option>
       </select>
   
-      <label class="input input-bordered flex items-center gap-1">
-        <div class="text-primary">Categoria
-          <span class="badge badge-info">Optional</span>
+      
+        <div class="flex flex-col">
+        
+          <ModalAutoClose
+          :modal-titulo="`Relacionar con una categoria`"
+          :modal-id="`agregarCategoria`"
+          >
+            <template #contenido>
+              <CrearCategoria
+                modo-seleccion
+                @selected-categorias="asignarCategoria"
+              />
+            </template>
+            </ModalAutoClose>
+            <span class="badge badge-info mx-auto">Optional</span>
         </div>
-        <button class="btn btn-sm btn-accent grow"> agregar</button>
-      </label>
+
+      <button  class="btn btn-sm btn-accent grow"> agregar</button>
    
   </form>
-  <pre>
-    {{formDataToSend}}
-  </pre>
+
+    {{formDataToSend.categoria}}
+
 
 </template>
 
 <script setup lang="ts">
+import CrearCategoria from '../categoria/crearCategoria.vue';
+
 
 
 // Definir la interfaz para el tipo de datos
 interface FormData {
   tipoCedula: string;
-  cedula: number;
+  cedula:string|number;
   nombre: string;
   ubicacion: string;
   tipo: string;
-  categoria: string[]; // Asumiendo que 'categoria' es un array de strings
+  categoria: (string|number)[]; // Asumiendo que 'categoria' es un array de strings
 }
 
 // Usar el store
@@ -73,22 +87,42 @@ const storeCooperador = useAdminCooperadorStore();
 
 // Inicializar formDataToSend con el tipo definido
 const formDataToSend = ref<FormData>({
-  tipoCedula: '',
-  cedula: 0,
+  tipoCedula: 'Tipo cedula',
+  cedula: '',
   nombre: '',
   ubicacion: '',
-  tipo: '',
+  tipo: 'Tipo Colaborador',
   categoria: []
 });
 
+function asignarCategoria(data: (string|number)[] ){
+  formDataToSend.value.categoria = data 
+}
+
 async function component_crearCooperador() {
-  // Verificar si 'categoria' está vacío
-  if (formDataToSend.value.categoria?.length === 0) {
-    // Eliminar la propiedad 'categoria' del objeto
-    //@ts-ignore
-    delete formDataToSend.value.categoria; // Asegúrate de que esto sea válido en tu contexto
+
+  const tiposInvalidos:(string | number)[] = ['Tipo cedula', 'Tipo Colaborador',''];
+  let partesIncompletas = [];
+
+  if (tiposInvalidos.includes(formDataToSend.value.tipoCedula)) {
+    partesIncompletas.push('Tipo de cédula');
   }
-  
+
+  if (tiposInvalidos.includes(formDataToSend.value.tipo)) {
+    partesIncompletas.push('Tipo de colaborador');
+  }
+
+  if (tiposInvalidos.includes(formDataToSend.value.cedula)) {
+    partesIncompletas.push('no deje campos vacios');
+  }
+
+  if (partesIncompletas.length > 0) {
+    const mensaje = `Por favor, complete las siguientes partes del formulario:\n- ${partesIncompletas.join('\n- ')}`;
+    alert(mensaje);
+    return
+  }
+
+  console.log( formDataToSend.value )
   // Llamar a la función para crear el cooperador
   const cosa = await storeCooperador.crearCooperador({ dataToSend: formDataToSend.value });
 

@@ -1,8 +1,9 @@
 <template>
+
 <div class="flex flex-col items-center gap-1">
   <input v-model="store.nombreGrupoImagen" type="text" placeholder="nombre de grupo de imagenes" class="input input-primary w-full max-w-xs">
   
-    <div class=" grid relative gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 overflow-auto max-h-[500px] border-2 border-primary p-2">
+    <div v-if="!props.modoSeleccion" class=" grid relative gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 overflow-auto max-h-[500px] border-2 border-primary p-2">
       <MultipleFileUpload
       :removeBtnText="'x'"
       :uploadedFiles="uploadedFiles"
@@ -80,16 +81,20 @@
         </template>
       </ModalAutoClose>
     </div>
-
-
 </div>
-
 </template>
 
 <script setup lang="ts">
 // @ts-ignore
 import { MultipleFileUpload } from '@canopassoftware/vue-file-upload'
 import "@canopassoftware/vue-file-upload/style.css"
+
+const props= defineProps({
+  modoSeleccion:{
+    type:Boolean,
+    default:false
+  }
+})
 
 const store = useImagenStore()
 

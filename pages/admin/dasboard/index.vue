@@ -15,9 +15,6 @@
 
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth'
-})
 
 interface User {
   name: string

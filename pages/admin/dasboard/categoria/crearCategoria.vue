@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="component_storeCategoria" action="">
+  <form v-if="!props.modoSeleccion" @submit.prevent="component_storeCategoria" action="">
     <div class="max-w-2xl flex flex-col gap-2 mx-auto  ">
       <p class="text-primary-content bg-primary rounded-box text-center font-bold">CREAR CATEGORIA</p>
   
@@ -22,31 +22,58 @@
 
 
     <TransitionFade group class=" flex flex-wrap justify-center gap-2 my-4">
-      <div 
-        v-for="(categoria,index) in DB_categoria.data" :key="categoria.name" 
-        class=" border-2 rounded-md p-2  relative">
+      <div
+        v-for="(categoria,index) in DB_categoria.data" :key="categoria.id"
+        :class="[
+         {'bg-green-600 text-white': selectedCategories.includes(categoria.id)},
+         {'hover:cursor-pointer': props.modoSeleccion}
+        ]"
+        @click="toggleCategorySelection(categoria.id)"
+        class="hover:border-primary border-2 rounded-md p-2  relative"
+        >
         {{ categoria.name }}
-        <Icon
-          @click="component_storeEliminarCategoria(`${categoria.id}`, categoria.name)"
+        <Icon v-if="!props.modoSeleccion"
+          @click.stop="component_storeEliminarCategoria(`${categoria.id}`, categoria.name)"
           class="absolute -top-2 -right-2 text-red-300 hover:text-red-500 hover:cursor-pointer" 
           size="20" 
           name="fa:close">
         </Icon>
       </div>
     </TransitionFade>
-  
 
-    <hr>
-    <pre>
-      {{ DB_categoria.data }}
-    </pre>
-    <hr>
 
   {{dataToSend.name}}
 </template>
 
 <script setup lang="ts">
 import type { Categorias } from '~/stores/CrearCategoria';
+
+const emit = defineEmits(['selectedCategorias'])
+
+const props= defineProps({
+  modoSeleccion:{
+    type:Boolean,
+    default:false,
+    required:false,
+  }
+})
+
+
+const selectedCategories:Ref<(string|number)[]> = ref([]);
+
+const toggleCategorySelection = (categoriaId:string|number) => {
+
+  if(!props.modoSeleccion) return
+   
+  const index = selectedCategories.value.indexOf(categoriaId);
+  if (index === -1) {
+    selectedCategories.value.push(categoriaId);
+  } else {
+    selectedCategories.value.splice(index, 1);
+  }
+
+  emit('selectedCategorias',selectedCategories.value)
+};
 
 const storeCategoria = useCategoriaStore()
 const dataToSend = ref({

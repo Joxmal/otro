@@ -10,7 +10,7 @@ export const useAdminCooperadorStore = defineStore('AdminCooperadorStore', {
     actions: {
         async crearCooperador({ dataToSend }: { dataToSend: Object }){
             const { user, loggedIn, token } = await useJwtAuth();
-            try {
+           
                 const response:any = await $fetch(`${APIURL}/cooperador`, {
                     method: "POST",
                     headers: {
@@ -23,9 +23,7 @@ export const useAdminCooperadorStore = defineStore('AdminCooperadorStore', {
                   this.count_reload++;
                   return response;   
 
-            } catch (error) {
-                console.error(error)
-            }
+       
         }
     },
   });

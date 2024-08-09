@@ -8,6 +8,6 @@
             <Icon name="material-symbols:admin-panel-settings"></Icon>
         </div>
         <BaseNavbar></BaseNavbar>
-      <slot />
+      <slot></slot>
     </div>
 </template>

@@ -1,6 +1,9 @@
 <template>
-{{ `${config.public.NUXT_API_URL}/post/${queryCategoria}` }}
-{{queryCategoria}}
+
+  <div v-if="loggedIn">
+    {{ `${config.public.NUXT_API_URL}/post/${queryCategoria}` }}
+    {{queryCategoria}}
+  </div>
   <CarruselBasic class="-z-50" />
   <div class="flex flex-wrap gap-2 justify-center my-12">
 
@@ -56,8 +59,11 @@ const { data: dataCategorias} = await useFetch<Categorias[]>(`${config.public.NU
 
 // cargar posts
 const queryCategoria = ref<string | undefined>(undefined);
+const { token, loggedIn } = await useJwtAuth();
 const fetchPosts = async () => {
-  const { data, status  } = await useFetch<Post[]>(`${config.public.NUXT_API_URL}/post`,{
+  const url = `${config.public.NUXT_API_URL}/post${token.value ? `/?token=${token.value}` : ''}`
+  console.log(url)
+  const { data, status  } = await useFetch<Post[]>(url,{
     query:{
       categoria: queryCategoria.value
     },

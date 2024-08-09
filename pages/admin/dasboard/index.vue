@@ -11,15 +11,18 @@
       <hr>
       {{ loggedIn }}
     </div>
+
+    
 </template>
 
 
 <script setup lang="ts">
 
 interface User {
-  name: string
+   user: string
 }  
 
 const { user, loggedIn, token } = await useJwtAuth<User>()
+
 
 </script>

@@ -21,17 +21,16 @@ export const useAdminPostStore = defineStore("AdminPostStore", {
       return response;
     },
 
-    async GetPost({ dataToSend }: { dataToSend: Object }) {
-      const { user, loggedIn, token } = await useJwtAuth();
-      const response: any = await $fetch(`${APIURL}/post/${token}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        body: JSON.stringify(dataToSend),
+    async GetPost({ dataToSend='' }: { dataToSend?: string }) {
+      const {token} = await useJwtAuth();
+      const response: any = await $fetch(`${APIURL}/post${`/?token=${token.value}`}`, {
+        method: "GET",
+        query:{
+          categoria: dataToSend
+        }
       });
 
-      this.count_reload++;
+      console.log(response)
       return response;
     },
 

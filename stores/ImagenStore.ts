@@ -1,5 +1,4 @@
 import { APIURL } from "~/constants/apiUrl";
-const { user, loggedIn, token } = await useJwtAuth()
 export const useImagenStore = defineStore('ImagenStore', {
     state: () => ({
       contador_reload: 0,
@@ -22,6 +21,8 @@ export const useImagenStore = defineStore('ImagenStore', {
       },
 
       async enviarArchivosAlBackend(archivos: File[],nombreGrupoImagen:string) {
+        const { user, loggedIn, token } = await useJwtAuth()
+
         const formData = new FormData();
       
         // Agregar cada archivo al objeto de formulario multipart
@@ -58,6 +59,8 @@ export const useImagenStore = defineStore('ImagenStore', {
       },
 
       async eliminarImagen({id}:{id:number|string}){
+        const { user, loggedIn, token } = await useJwtAuth()
+
         try {
           const response = await fetch(`${APIURL}/post/files/${id}`, {
             method: 'DELETE',

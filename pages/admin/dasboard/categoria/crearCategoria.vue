@@ -20,7 +20,6 @@
     </label>
   <hr>
 
-
     <TransitionFade group class=" flex flex-wrap justify-center gap-2 my-4">
       <div
         v-for="(categoria,index) in DB_categoria.data" :key="categoria.id"

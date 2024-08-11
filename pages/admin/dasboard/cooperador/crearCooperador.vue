@@ -61,13 +61,15 @@
       <button  class="btn btn-sm btn-accent grow"> agregar</button>
    
   </form>
-
+  <DevOnly>
     {{formDataToSend.categoria}}
+  </DevOnly>
 
 
 </template>
 
 <script setup lang="ts">
+
 import CrearCategoria from '../categoria/crearCategoria.vue';
 
 

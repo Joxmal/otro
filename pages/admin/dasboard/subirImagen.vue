@@ -1,7 +1,7 @@
 <template>
 
 <div class="flex flex-col items-center gap-1">
-  <input v-model="store.nombreGrupoImagen" type="text" placeholder="nombre de grupo de imagenes" class="input input-primary w-full max-w-xs">
+  <input v-if="!props.modoSeleccion" v-model="store.nombreGrupoImagen" type="text" placeholder="nombre de grupo de imagenes" class="input input-primary w-full max-w-xs">
   
     <div v-if="!props.modoSeleccion" class=" grid relative gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 overflow-auto max-h-[500px] border-2 border-primary p-2">
       <MultipleFileUpload
@@ -68,13 +68,39 @@
         v-for="(grupo,grupoName,index) in nombregrupoImagenes" :key="index"
         :modal-titulo="`${grupoName}`"
         :modal-id="`${grupoName}-${index}`">
-        <template #contenido :key="index"> 
-          <TransitionFade group class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
+        <template #contenido :key="`${grupoName}-${index}`"> 
+          <TransitionFade group class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 overflow-auto">
             <template v-for="(file,name,index) in nombregrupoImagenes[grupoName]" :key="nombregrupoImagenes[grupoName][name].id">
-                <figure class=" w-full h-48 bg-red realative border select-none">
-                  <Icon @click="component_eliminarImagen(nombregrupoImagenes[grupoName][name].id)" class="absolute z-50 text-red-400 hover:text-red-600 hover:cursor-pointer" size="30" name="carbon:close-outline"></Icon>
+                <figure
+                    @click.stop="toggleCategorySelection(nombregrupoImagenes[grupoName][name].id)" 
+                    :class="[
+                      {'!text-success': selectedCategories.includes(nombregrupoImagenes[grupoName][name].id) },
+                      {'!border-success': selectedCategories.includes(nombregrupoImagenes[grupoName][name].id) },
+                      {'cursor-pointer': props.modoSeleccion },
+                    ]"
+                    class=" relative w-full h-48 bg-red realative border select-none">
+                  <Icon
+                    v-if="!props.modoSeleccion"
+                    @click="component_eliminarImagen(nombregrupoImagenes[grupoName][name].id)" 
+                    class="absolute z-50 text-red-400 hover:text-red-600 hover:cursor-pointer" 
+                    size="30" 
+                    name="carbon:close-outline">
+                  </Icon>
+                  <Icon
+                    v-if="props.modoSeleccion"
+                    class="absolute z-50  hover:cursor-pointer"
+                    :class="[
+                      {'!text-success': selectedCategories.includes(nombregrupoImagenes[grupoName][name].id) },
+                    ]"
+
+                    size="30"
+                    color="red" 
+                    name="fa:plus">
+                  </Icon>
                   <img class="w-full h-full object-contain" :src="nombregrupoImagenes[grupoName][name].secureUrl" :alt="`imagen del grupo ${grupoName}`">
-                  {{ nombregrupoImagenes[grupoName][name].id }}
+                  <DevOnly>
+                    {{ nombregrupoImagenes[grupoName][name].id }}
+                  </DevOnly>
                 </figure>
             </template>
           </TransitionFade>
@@ -89,6 +115,7 @@
 import { MultipleFileUpload } from '@canopassoftware/vue-file-upload'
 import "@canopassoftware/vue-file-upload/style.css"
 
+const emit = defineEmits(['selectedCategorias'])
 const props= defineProps({
   modoSeleccion:{
     type:Boolean,
@@ -122,6 +149,22 @@ watch(()=> store.contador_reload,()=>{
     component_obtenerImagenes()
   },1000);
 })
+
+
+const selectedCategories:Ref<(string|number)[]> = ref([]);
+const toggleCategorySelection = (categoriaId:string|number) => {
+
+if(!props.modoSeleccion) return
+ 
+const index = selectedCategories.value.indexOf(categoriaId);
+if (index === -1) {
+  selectedCategories.value.push(categoriaId);
+} else {
+  selectedCategories.value.splice(index, 1);
+}
+
+emit('selectedCategorias',selectedCategories.value)
+};
 
 </script>
 

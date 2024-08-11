@@ -8,6 +8,12 @@
   <div class="flex flex-wrap gap-2 justify-center my-12">
 
     <CardCategoria
+        :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === ''}"
+        @click="selectCategoria('')"
+        content="todos" 
+      />
+
+    <CardCategoria
     v-for="categoria in dataCategorias" 
     :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
     @click="selectCategoria(categoria.name)"

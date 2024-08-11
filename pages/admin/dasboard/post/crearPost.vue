@@ -23,27 +23,71 @@
           <option>4</option>
         </select>
     
-      <label class="input input-bordered flex items-center gap-1">
-        <div class="text-primary">Imagenes externas
-          <span class="badge badge-info">Optional</span>
+        <div class=" border rounded-md pt-2 input-bordered flex flex-col gap-2">
+        <div class="basis-1/3 min-w-min text-primary text-center">
+          Imagenes externas
         </div>
-        <label class="btn btn-sm btn-accent grow"> agregar</label>
-      </label>
+        <ModalAutoClose
+          :modal-titulo="`Seleccionar`"
+          :modal-id="`Seleccionar-Imagenes-Externas`">
+          <template #contenido>
+            sdsd
+          </template>
+        </ModalAutoClose>
+      </div>
   
-      <label class=" input input-bordered flex items-center gap-1">
-        <div class="text-primary">Imagenes internas
-          <span class="badge badge-info">Optional</span>
+      <div class=" border rounded-md pt-2 input-bordered flex flex-col gap-2">
+        <div class="basis-1/3 min-w-min text-primary text-center">
+          Imagenes internas
         </div>
-        <label class="btn btn-sm btn-accent grow "> agregar</label>
-      </label>
-  
-  
-      <label class="input input-bordered flex items-center gap-1">
-        <div class="text-primary">Cooperador
-          <span class="badge badge-info">Optional</span>
+        <ModalAutoClose
+          :modal-titulo="`Seleccionar`"
+          :modal-id="`Seleccionar-Imagenes-internas`">
+          <template #contenido>
+            <div class="min-h-[70dvh] ">
+              <SubirImagen
+                modo-seleccion
+                @selected-categorias="asignarImagen"
+              />
+            </div>
+          </template>
+        </ModalAutoClose>
+      </div>
+
+      <div class=" border rounded-md pt-2 input-bordered flex flex-col gap-2">
+        <div class="basis-1/3 min-w-min text-primary text-center">
+          Categoria
         </div>
-        <label class="btn btn-sm btn-accent grow"> agregar</label>
-      </label>
+        <ModalAutoClose
+          :modal-titulo="`Seleccionar`"
+          :modal-id="`Seleccionar-Categoria`">
+          <template #contenido>
+            <CrearCategoria
+              @selected-categorias="asignarCategoria"
+              modo-seleccion
+              
+            />
+          </template>
+        </ModalAutoClose>
+      </div>
+  
+  
+      <div class=" border rounded-md pt-2 input-bordered flex flex-col gap-2">
+        <div class="basis-1/3 min-w-min text-primary text-center">
+            Cooperador
+        </div>
+        <ModalAutoClose
+          :modal-titulo="`Seleccionar`"
+          :modal-id="`Seleccionar-Cooperador`">
+          <template #contenido>
+            <CrearCategoria
+              modo-seleccion
+              
+            />
+          </template>
+        </ModalAutoClose>
+      </div>
+      
     </div>
   
     <div class="flex flex-col items-center">
@@ -55,20 +99,20 @@
       </textarea>
   
       <h3 class="text-2xl text-center">Contendio principal</h3>
-      <TransitionFade group class=" flex flex-col w-full gap-2 ">
-        <div class="relative" v-for="(parrafo,index) in parrafosContent" :key="index">
+      <TransitionFade group class=" flex flex-col w-full items-center  gap-2 ">
+        <div class=" flex flex-col relative w-full  max-w-6xl" v-for="(parrafo,index) in parrafosContent" :key="index">
           <Icon v-if="index !== 0"
             @click.stop="parrafosContent.splice(index,1)"
             class="btn btn-xs btn-circle absolute top-4 right-0 text-red-300 hover:text-red-500 hover:cursor-pointer" 
             size="10" 
             name="fa:close">
           </Icon>
-          <span>  parrafo N° {{ index+1 }}  </span>
+          <span> parrafo N° {{ index+1 }}  </span>
           <textarea
             v-model="parrafosContent[index]"
             rows="1"
             placeholder="contendio principal"
-            class="textarea leading-5 textarea-bordered textarea-sm w-full max-w-6xl">
+            class="textarea leading-5 textarea-bordered textarea-sm w-full">
           </textarea>
         </div>
   
@@ -86,18 +130,63 @@
       </TransitionFade>
     </div>
   </form>
-
-
-  <button class="btn" @click="console.log(parrafosContent)">consola</button>  
-  parrafosContent {{parrafosContent}}
   <pre>
     {{ dataToSend }}
   </pre>
+  
+  <!-- cuadro de edicion -->
+  <div>
+    <label class="input input-bordered flex items-center my-2">
+      <input  type="text" class="grow" placeholder="Search" />
+      <Icon name="ic:baseline-search"></Icon>
+    </label>
+    <hr>
+
+    <div class="flex flex-wrap gap-2 justify-center my-12">
+      <CardCategoria
+        :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === ''}"
+        @click="selectCategoria('')"
+        content="todos" 
+      />
+
+      <CardCategoria
+      v-for="categoria in dataCategorias" 
+      :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
+      @click="selectCategoria(categoria.name)"
+      :content="categoria.name" 
+      />
+    </div>
+
+    <TransitionFade group class=" flex flex-wrap justify-around gap-1 my-4 min-h-[293px]">
+      <div v-for="(post,index) in DB_dataPost" class="group card glass basis-[230px] bg-base-300 shadow-md  hover:shadow-primary ">
+        <figure>
+          <img
+            :src="post.images[0]"
+            alt="car!" />
+        </figure>
+        <div class="card-body p-2">
+          <h2 class="card-title text-center mx-auto">{{ post.title }}</h2>
+          <p class="leading-4">{{ post.summary }}</p>
+          <div class="card-actions justify-end">
+            <button class="btn btn-primary">Detalles</button>
+          </div>
+        </div>
+      </div>
+    </TransitionFade>
+    <pre>
+      {{ queryCategoria }}
+    </pre>
+
+  </div>
 
 </template>
 
 
 <script setup lang="ts">
+import { APIURL } from '~/constants/apiUrl';
+import CrearCategoria from '../categoria/crearCategoria.vue';
+import SubirImagen from '../subirImagen.vue';
+
 const { user, loggedIn, token } = await useJwtAuth()
 
 const storePost = useAdminPostStore()
@@ -115,7 +204,12 @@ const dataToSend= ref({
   template:1,
   authorID:0,
   filesPost:[],
-  cooperador:[]
+  cooperador:[],
+  categoria:[]
+})
+
+onMounted(()=>{
+  component_getPost({})
 })
 
 
@@ -126,4 +220,60 @@ function component_createPost(ID_user:number){
 
   storePost.CreatePost({dataToSend:dataToSend.value})
 }
+
+export interface DBDataPost {
+  id:         number;
+  title:      string;
+  content:    string[];
+  summary:    null;
+  published:  boolean;
+  images:     string[];
+  template:   number;
+  createdAt:  Date;
+  updatedAt:  Date;
+  authorID:   number;
+  author:     Author;
+  cooperador: any[];
+  files:      any[];
+}
+export interface Author {
+  id:   number;
+  name: string;
+}
+
+//-------------------------
+
+const DB_dataPost:Ref<DBDataPost[]|null> = ref(null)
+async function component_getPost({categoria=''}:{categoria?:string}){
+  DB_dataPost.value = await storePost.GetPost({dataToSend:categoria})
+
+}
+
+//-------------------
+
+const queryCategoria = ref<string | undefined>(undefined);
+  const selectCategoria = (categoriaName: string) => {
+  queryCategoria.value = categoriaName;
+};
+interface Categorias {
+  id: number;
+  name: string;
+}
+
+
+
+
+const { data: dataCategorias} = await useFetch<Categorias[]>(`${APIURL}/categorias`);
+
+function asignarCategoria(valor:[]){
+  dataToSend.value.categoria = valor
+}
+function asignarImagen(valor:[]){
+  dataToSend.value.filesPost = valor
+}
+
+watch(queryCategoria, async (newCategoria) => {
+  // Reenvía la petición cuando cambia la categoría
+   await component_getPost({categoria:queryCategoria.value});
+});
 </script>

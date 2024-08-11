@@ -4,7 +4,7 @@
           <img
           :src="props.image"
           alt="Shoes"
-          class="h-40 w-full object-cover group-hover:scale-125 transition-all duration-500 "
+          class="h-50 w-full object-contain group-hover:scale-125 transition-all duration-500 "
           />
         </figure>
       <div  class="mb-2" >

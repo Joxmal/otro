@@ -7,7 +7,7 @@
   </div>
   <div class="flex justify-center">
     <AdminLogin
-      @dataLogin="login"
+      @dataLogin="loginExternal"
     />
   </div>
 
@@ -16,6 +16,8 @@
 
 
 <script setup >
+import { APIURL } from '~/constants/apiUrl';
+
   
 
 
@@ -51,6 +53,43 @@ async function login(data) {
     if(e.statusCode === 403){
     invalidSession.value = true
     }
+  }
+}
+
+async function loginExternal(dataLogin){
+  try {
+    // console.log(dataLogin)
+    // alert(
+    //   `
+    //   name : ${dataLogin.user},
+    //   password: ${dataLogin.password}
+    //   destino: ${APIURL}/auth
+    //   `
+    // )
+    const response = await $fetch(`${APIURL}/auth`,{
+      method:'post',
+  
+      body:{
+        name : dataLogin.user,
+        password: dataLogin.password
+      },
+    })
+
+    // alert(`
+    //   ${response}
+    // `)
+  
+    console.log(response)
+    $jwtAuth.setTokenAndUser(
+    {
+      token:response.token,
+      user: response.user
+    }
+    )
+    useRouter().push('/admin/dasboard')
+    
+  } catch (error) {
+    invalidSession.value = true
   }
 }
 </script>

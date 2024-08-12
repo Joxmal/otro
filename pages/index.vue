@@ -85,6 +85,7 @@ watch(queryCategoria, async (newCategoria) => {
   // Reenvía la petición cuando cambia la categoría
   const { data, status } = await fetchPosts();
   dataPosts.value = data.value; // Actualiza los posts
+  console.log(data.value)
   dataPostsStatus.value = status.value; // Actualiza el estado
 });
 

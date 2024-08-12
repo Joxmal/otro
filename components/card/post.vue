@@ -7,6 +7,9 @@
           class="h-50 w-full object-contain group-hover:scale-125 transition-all duration-500 "
           />
         </figure>
+        <DevOnly>
+          {{props.image}}
+        </DevOnly>
       <div  class="mb-2" >
         <h5 class=" text-xl text-wrap text-center">
           {{ props.title }}

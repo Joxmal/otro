@@ -80,9 +80,9 @@
           :modal-titulo="`Seleccionar`"
           :modal-id="`Seleccionar-Cooperador`">
           <template #contenido>
-            <CrearCategoria
+            <AdminCooperadorSearch
               modo-seleccion
-              
+              @selected-categorias="asignarCooperador"
             />
           </template>
         </ModalAutoClose>
@@ -130,9 +130,11 @@
       </TransitionFade>
     </div>
   </form>
-  <pre>
-    {{ dataToSend }}
-  </pre>
+  <!-- <DevOnly>
+    <pre>
+      {{ dataToSend }}
+    </pre>
+  </DevOnly> -->
   
   <!-- cuadro de edicion -->
   <div>
@@ -173,10 +175,6 @@
         </div>
       </div>
     </TransitionFade>
-    <pre>
-      {{ queryCategoria }}
-    </pre>
-
   </div>
 
 </template>
@@ -268,6 +266,9 @@ const { data: dataCategorias} = await useFetch<Categorias[]>(`${APIURL}/categori
 function asignarCategoria(valor:[]){
   dataToSend.value.categoria = valor
 }
+function asignarCooperador(valor:[]){
+  dataToSend.value.cooperador = valor
+}
 function asignarImagen(valor:[]){
   dataToSend.value.filesPost = valor
 }
@@ -276,4 +277,10 @@ watch(queryCategoria, async (newCategoria) => {
   // Reenvía la petición cuando cambia la categoría
    await component_getPost({categoria:queryCategoria.value});
 });
+
+
+
+watch(()=> storePost.count_reload,()=>{
+  component_getPost({})
+})
 </script>

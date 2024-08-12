@@ -61,9 +61,11 @@
       <button  class="btn btn-sm btn-accent grow"> agregar</button>
    
   </form>
-  <DevOnly>
+  <!-- <DevOnly>
     {{formDataToSend.categoria}}
-  </DevOnly>
+  </DevOnly> -->
+
+  <AdminCooperadorSearch/>
 
 
 </template>
@@ -128,6 +130,7 @@ async function component_crearCooperador() {
   // Llamar a la función para crear el cooperador
   const cosa = await storeCooperador.crearCooperador({ dataToSend: formDataToSend.value });
 
+  storeCooperador.optenerCooperador()
   console.log(cosa)
 }
 </script>

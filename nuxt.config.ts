@@ -18,7 +18,7 @@ export default defineNuxtConfig({
 
   runtimeConfig:{
     public:{
-      NUXT_API_URL:'http://localhost:3009/api'
+      NUXT_API_URL:'http://localhost:3000/api'
     }
   },
   compatibilityDate: '2024-08-06',
@@ -83,7 +83,7 @@ swiper: {
     }
   },
   nuxtJwtAuth: {
-    baseUrl: 'http://localhost:3009/api', // URL of your backend
+    baseUrl: 'http://localhost:3000/api', // URL of your backend
     endpoints: {
       login: '/auth', // Where to request login (POST)
       logout: '/logout', // Where to request logout (POST)

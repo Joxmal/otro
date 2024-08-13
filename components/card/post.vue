@@ -1,15 +1,13 @@
 <template>
-  <div class="group card bg-base-300 shadow-md border border-primary hover:shadow-pink-500 hover:cursor-pointer w-full">
+  <div class="group card bg-base-300 shadow-md border border-primary hover:shadow-pink-500 hover:cursor-pointer">
         <figure class="" >
           <img
           :src="props.image"
           alt="Shoes"
-          class="h-50 w-full object-contain group-hover:scale-125 transition-all duration-500 "
+          class="h-50 w-full object-contain group-hover:scale-125 transition-all duration-500 aspect-[9/6] "
           />
         </figure>
-        <DevOnly>
-          {{props.image}}
-        </DevOnly>
+
       <div  class="mb-2" >
         <h5 class=" text-xl text-wrap text-center">
           {{ props.title }}

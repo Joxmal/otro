@@ -11,21 +11,17 @@
     />
   </div>
 
-  {{  }}
+
 </template>
 
 
 <script setup >
 import { APIURL } from '~/constants/apiUrl';
 
-  
-
-
 definePageMeta({
     layout:'default',
     middleware: 'guest'
 })
-
 
 const { $jwtAuth } = useNuxtApp()
 

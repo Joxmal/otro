@@ -1,10 +1,9 @@
 <template>
-
   <div v-if="loggedIn">
     {{ `${config.public.NUXT_API_URL}/post/${queryCategoria}` }}
     {{queryCategoria}}
   </div>
-  <CarruselBasic class="-z-50" />
+  <CarruselBasic :images="secureUrlCarrusel" class="-z-50" />
   <div class="flex flex-wrap gap-2 justify-center my-12">
 
     <CardCategoria
@@ -54,6 +53,9 @@ const selectCategoria = (categoriaName: string) => {
 };
 
 
+
+
+
 const config = useRuntimeConfig();
 
 interface Categorias {
@@ -92,6 +94,18 @@ watch(queryCategoria, async (newCategoria) => {
 function moverseAlPost(category:string,id:number){
   route.push(`post/${category}/${id}`)
 }
+
+///--------------
+interface Carrusel {
+  id: number;
+}
+const { data: dataCarrusel} = await useFetch<Carrusel[]>(`${config.public.NUXT_API_URL}/images/carrusel`);
+
+const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${config.public.NUXT_API_URL}/post/files/${element.id}`)
+
+
+
+
 
 
 </script>

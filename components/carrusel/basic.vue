@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { SwiperAutoplay,SwiperEffectCreative,SwiperNavigation } from '#imports';
 
 const props = defineProps({
   images:{
@@ -80,7 +81,10 @@ const swiperOptions={
         translate: ['100%', 0, 0],
       }
     }
-  }
+}
+
+
+
 </script>
 
 <style scoped>

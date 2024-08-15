@@ -34,5 +34,49 @@ export const useAdminPostStore = defineStore("AdminPostStore", {
       return response;
     },
 
+    async cambiarEstadoPost({id,estadoActual}:{id:number,estadoActual:boolean}){
+      const {token} = await useJwtAuth();
+      try {
+        const response: any = await $fetch(`${APIURL}/post/${id}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+            "Content-Type": "application/json",
+          },
+          body:{
+            published: estadoActual
+          }
+        });
+        this.count_reload++
+        console.log(response)
+        return response
+      } catch (error) {
+        console.error(error)
+        
+      }
+    },
+
+    async eliminarPost({id}:{id:number}){
+      const confirmDelete = confirm('desea Eliminar este post')
+      if(!confirmDelete) return
+
+      const {token} = await useJwtAuth();
+      try {
+        const response: any = await $fetch(`${APIURL}/post/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+            "Content-Type": "application/json",
+          },
+        });
+        this.count_reload++
+        console.log(response)
+        return response
+      } catch (error) {
+        console.error(error)
+        
+      }
+    }
+
   },
 });

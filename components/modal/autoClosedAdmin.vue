@@ -24,7 +24,7 @@
   </div>
 
  
-  <!-- <label class="modal-backdrop " :for="props.modalId">Close</label> -->
+  <label class="modal-backdrop" :for="props.modalId">Close</label>
 </div>
 </template>
 

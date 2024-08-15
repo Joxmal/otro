@@ -64,10 +64,10 @@
     </div>
 
     <div class="flex flex-wrap justify-center gap-2" v-if="nombregrupoImagenes">
-      <ModalAutoClose
+      <ModalAutoClosedAdmin
         v-for="(grupo,grupoName,index) in nombregrupoImagenes" :key="index"
         :modal-titulo="`${grupoName}`"
-        :modal-id="`${grupoName}-${index}`">
+        :modal-id="`${grupoName}-${index}-${props.idIMage}`">
         <template #contenido :key="`${grupoName}-${index}`"> 
           <TransitionFade group class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 overflow-auto">
             <template v-for="(file,name,index) in nombregrupoImagenes[grupoName]" :key="nombregrupoImagenes[grupoName][name].id">
@@ -105,7 +105,7 @@
             </template>
           </TransitionFade>
         </template>
-      </ModalAutoClose>
+      </ModalAutoClosedAdmin>
     </div>
 </div>
 </template>
@@ -120,6 +120,10 @@ const props= defineProps({
   modoSeleccion:{
     type:Boolean,
     default:false
+  },
+  idIMage:{
+    type:String,
+    default:'zero'
   }
 })
 

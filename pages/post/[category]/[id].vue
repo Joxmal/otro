@@ -14,10 +14,9 @@
   <div class="">
     <div class="">
       <LazyClientOnly>
-        <DevOnly>
-          {{ dataPosts?.images[dataPosts?.images.length-1] }}
-        </DevOnly>
-        <img :src="dataPosts?.images[dataPosts?.images.length-1]" alt="img" class="w-full sm:w-fit sm:float-right h-40 object-cover pl-2 rounded-badge">
+        <div class="w-full sm:!w-fit sm:float-right h-40">
+          <img :src="dataPosts?.images[dataPosts?.images.length-1]" alt="img" class=" w-full h-full object-cover pl-2 ">
+        </div>
         <p v-for="parrafo in dataPosts?.content" class="text-wrap">
           {{ parrafo }}
         </p>

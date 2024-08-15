@@ -160,21 +160,46 @@
     </div>
 
     <TransitionFade group class=" flex flex-wrap justify-around gap-1 my-4 min-h-[293px]">
-      <div v-for="(post,index) in DB_dataPost" class="group card glass basis-[230px] bg-base-300 shadow-md  hover:shadow-primary ">
-        <figure>
+      <div v-for="(post,index) in DB_dataPost" class="group h-96 card glass basis-[230px] bg-base-300 shadow-md  hover:shadow-primary ">
+        <button @click="storePost.eliminarPost({id:post.id})" class="btn btn-sm btn-circle absolute right-0 hover:text-red-600">
+          <Icon name="material-symbols:delete"> </Icon>
+        </button>
+        <figure class="h-[50%]">
           <img
+            class="w-full h-full object-contain"
             :src="post.images[0]"
             alt="car!" />
         </figure>
         <div class="card-body p-2">
           <h2 class="card-title text-center mx-auto">{{ post.title }}</h2>
           <p class="leading-4">{{ post.summary }}</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary">Detalles</button>
+
+          <hr>
+          
+          <div class="flex flex-col gap-2">
+            <label class="text-center">{{ post.published ? 'Activado' : 'Desactivado' }}</label>
+            <input @change="storePost.cambiarEstadoPost({ id:post.id,estadoActual:post.published})"  v-model="post.published" type="checkbox" class="toggle  toggle-accent mx-auto"  />
+
+            <button @click="abrirModal({postData:post})" class="btn btn-primary">EDITAR</button>
           </div>
+
         </div>
       </div>
     </TransitionFade>
+
+
+
+    <LazyModalAutoClose
+      ref="modalEditar"
+      hidden
+      :modal-titulo="'EDITAR'"
+      :modal-id="`modalEditar-boton`">
+      <template #contenido>
+        <LazyAdminPostEditar
+          :object-data="dataSinglePost"
+        />
+      </template>
+    </LazyModalAutoClose>
   </div>
 
 </template>
@@ -184,6 +209,7 @@
 import { APIURL } from '~/constants/apiUrl';
 import CrearCategoria from '../categoria/crearCategoria.vue';
 import SubirImagen from '../subirImagen.vue';
+import type { ModalAutoClose } from '#build/components';
 
 const { user, loggedIn, token } = await useJwtAuth()
 
@@ -283,4 +309,13 @@ watch(queryCategoria, async (newCategoria) => {
 watch(()=> storePost.count_reload,()=>{
   component_getPost({})
 })
+
+
+const modalEditar = ref<InstanceType<typeof ModalAutoClose>>();
+const dataSinglePost = ref()
+function abrirModal({postData}:{postData:Object}){
+  modalEditar.value?.boton?.click()
+  dataSinglePost.value = postData
+  
+}
 </script>

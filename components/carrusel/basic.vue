@@ -60,30 +60,6 @@ const props = defineProps({
   }
 })
 
-const swiperOptions={
-  modules: [SwiperAutoplay, SwiperEffectCreative,SwiperNavigation],
-  navigation:{
-    nabled: true,
-  },
-  "slides-per-view":1,
-  autoplay:{
-    delay: 3000,
-    disableOnInteraction: true,
-  },
-  effect:"creative",
-  loop:true,
-    "creative-effect":{
-      prev: {
-        shadow: false,
-        translate: ['-20%', 0, -1],
-      },
-      next: {
-        translate: ['100%', 0, 0],
-      }
-    }
-}
-
-
 
 </script>
 

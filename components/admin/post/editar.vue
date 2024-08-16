@@ -85,6 +85,7 @@
           <template #contenido>
             <AdminCooperadorSearch
               modo-seleccion
+              :inyeccion-cooperador="props.objectData?.cooperador.map(unCooperador => unCooperador.id)"
               @selected-categorias="asignarCooperador"
             />
           </template>
@@ -135,11 +136,11 @@
   </form>
 
   </div>
-  <pre>
+  <pre class="text-success" >
     {{dataToSend}}
   </pre>
   <hr>
-  <pre>
+  <pre class="text-warning" > 
     
     {{props.objectData}}
   </pre>
@@ -153,6 +154,8 @@
 import CrearCategoria from '~/pages/admin/dasboard/categoria/crearCategoria.vue';
 import SubirImagen from '~/pages/admin/dasboard/subirImagen.vue';
 
+
+const storePost = useAdminPostStore()
 
 interface DataToSend {
     id?: number
@@ -185,9 +188,16 @@ interface DBDataPost {
   updatedAt:  Date;
   authorID:   number;
   author:     Author;
-  cooperador: any[];
+  cooperador: CooperadorElement[];
   files:      FileElement[];
   categoria:   Categoria[]
+}
+
+export interface CooperadorElement {
+  id:         number;
+  tipoCedula: string;
+  nombre:     string;
+  tipo:       string;
 }
 
 interface Author {
@@ -204,17 +214,17 @@ export interface FileElement {
   updatedAt: Date;
 }
 
-
-
-
 const props = defineProps({
   objectData:{
     type: Object as ()=> DBDataPost,
   }
 })
 
-function component_actualizarPost(){
-    dataToSend.value.title
+async function component_actualizarPost(){
+  asignacionDataToSend()
+  if(props.objectData?.id)
+  await storePost.ActualizarPost({dataToSend:dataToSend.value,id:props.objectData?.id})
+
 }
 
 
@@ -229,13 +239,13 @@ function asignarImagen(valor:[]){
 }
 
 const dataToSend= ref({
-  title:'',
-  content:[''],
-  summary:'',
-  published:false,
-  images:[],
-  template:1,
-  authorID:0,
+  title:''as string|undefined,
+  content:[''] as string[]|undefined,
+  summary:'' as string|undefined|null,
+  published:false as boolean|undefined,
+  images:[] as string[]|undefined,
+  template:1 as number|undefined,
+  authorID:0 as number|undefined,
   filesPost:[] as number[]|undefined,
   cooperador:[] as number[]|undefined,
   categoria:[] as number[]|undefined
@@ -243,8 +253,30 @@ const dataToSend= ref({
 
 watch(()=> props.objectData?.id,()=>{
   
-  dataToSend.value.filesPost = props.objectData?.files.map(file => file.id)
-
+  asignacionDataToSend()
+  
 })
+
+watch(()=> props.objectData?.files,()=>{
+  
+ dataToSend.value.filesPost = props.objectData?.files.map(file => file.id)
+  
+})
+
+function asignacionDataToSend(){
+
+  console.log(props.objectData?.summary)
+
+  dataToSend.value.authorID = props.objectData?.authorID
+
+  dataToSend.value.title = props.objectData?.title
+  dataToSend.value.content = props.objectData?.content
+  dataToSend.value.summary = props.objectData?.summary
+  dataToSend.value.published = props.objectData?.published
+  dataToSend.value.cooperador = props.objectData?.cooperador.map(cop => cop.id)
+  dataToSend.value.categoria = props.objectData?.categoria.map(cat => cat.id)
+  dataToSend.value.template = props.objectData?.template
+
+}
 
 </script>

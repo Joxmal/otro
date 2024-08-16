@@ -17,7 +17,7 @@
         name="fa:close">
       </Icon>
     </div>
-  </TransitionFade> 
+  </TransitionFade>
 </template>
 
 
@@ -50,6 +50,9 @@ const props= defineProps({
     type:Boolean,
     default:false,
     required:false,
+  },
+  inyeccionCooperador:{
+    type:Array as () => number[]
   }
 })
 const selectedCategories:Ref<(string|number)[]> = ref([]);
@@ -77,6 +80,22 @@ watch(()=> storeCooperador.count_reload,()=>{
   setTimeout(() => {
     component_obtenerCooperador()
   },500);
+})
+
+watch(()=> props.inyeccionCooperador,()=>{
+console.log(props.inyeccionCooperador)
+if(props.inyeccionCooperador && props.inyeccionCooperador?.length <= 0){
+  console.log('props.inyeccionCooperador',props.inyeccionCooperador)
+  selectedCategories.value = props.inyeccionCooperador
+
+}
+
+if(props.inyeccionCooperador && props.inyeccionCooperador?.length>0){
+  console.log('props.inyeccionCooperador',props.inyeccionCooperador)
+  selectedCategories.value = props.inyeccionCooperador
+
+}
+  
 })
 
 </script>

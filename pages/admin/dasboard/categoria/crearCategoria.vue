@@ -131,7 +131,6 @@ if(props.inyeccionCategoria && props.inyeccionCategoria?.length>0){
   selectedCategories.value = props.inyeccionCategoria
 }
   
-
 })
 
 </script>

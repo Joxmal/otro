@@ -49,6 +49,7 @@
               <SubirImagen
                 :id-i-mage="props.objectData.title"
                 modo-seleccion
+                :inyeccion-seleccion="props.objectData?.files.map(file => file.id)"
                 @selected-categorias="asignarImagen"
               />
             </div>
@@ -65,8 +66,9 @@
           :modal-id="`Seleccionar-Categoria-${props.objectData.id}`">
           <template #contenido>
             <CrearCategoria
+              modo-seleccion
+              :inyeccion-categoria="props.objectData?.categoria.map(unaCategoria => unaCategoria.id)"
               @selected-categorias="asignarCategoria"
-              modo-seleccion  
             />
           </template>
         </ModalAutoClosedAdmin>
@@ -141,6 +143,10 @@
     
     {{props.objectData}}
   </pre>
+
+  <DevOnly>
+    sdsdds
+  </DevOnly>
 </template>
 
 <script setup lang="ts">
@@ -159,7 +165,12 @@ interface DataToSend {
     authorID: number;
     filesPost: never[];
     cooperador: never[];
-    categoria: never[];
+    categoria: Categoria[];
+}
+
+interface Categoria {
+  id: number,
+  name?: string
 }
 
 interface DBDataPost {
@@ -175,13 +186,26 @@ interface DBDataPost {
   authorID:   number;
   author:     Author;
   cooperador: any[];
-  files:      any[];
+  files:      FileElement[];
+  categoria:   Categoria[]
 }
 
 interface Author {
   id:   number;
   name: string;
 }
+
+export interface FileElement {
+  id:        number;
+  groupName: string;
+  filename:  string;
+  secureUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+
 
 const props = defineProps({
   objectData:{
@@ -212,8 +236,15 @@ const dataToSend= ref({
   images:[],
   template:1,
   authorID:0,
-  filesPost:[],
-  cooperador:[],
-  categoria:[]
+  filesPost:[] as number[]|undefined,
+  cooperador:[] as number[]|undefined,
+  categoria:[] as number[]|undefined
 })
+
+watch(()=> props.objectData?.id,()=>{
+  
+  dataToSend.value.filesPost = props.objectData?.files.map(file => file.id)
+
+})
+
 </script>

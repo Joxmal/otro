@@ -54,6 +54,9 @@ const props= defineProps({
     type:Boolean,
     default:false,
     required:false,
+  },
+  inyeccionCategoria:{
+    type:Array as () => number[]
   }
 })
 
@@ -114,6 +117,21 @@ watch(()=> storeCategoria.count_reaload,()=>{
   setTimeout(() => {
     component_obtenerCategoria({})
   },500);
+})
+
+watch(()=> props.inyeccionCategoria,()=>{
+
+if(props.inyeccionCategoria && props.inyeccionCategoria?.length <= 0){
+  console.log(props.inyeccionCategoria)
+  selectedCategories.value = props.inyeccionCategoria
+}
+
+if(props.inyeccionCategoria && props.inyeccionCategoria?.length>0){
+  console.log(props.inyeccionCategoria)
+  selectedCategories.value = props.inyeccionCategoria
+}
+  
+
 })
 
 </script>

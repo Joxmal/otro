@@ -124,6 +124,9 @@ const props= defineProps({
   idIMage:{
     type:String,
     default:'zero'
+  },
+  inyeccionSeleccion:{
+    type: Array as ()=> number[]
   }
 })
 
@@ -154,20 +157,37 @@ watch(()=> store.contador_reload,()=>{
   },1000);
 })
 
+watch(()=> props.inyeccionSeleccion,()=>{
+
+  if(props.inyeccionSeleccion && props.inyeccionSeleccion?.length <= 0){
+    console.log(props.inyeccionSeleccion)
+    selectedCategories.value = props.inyeccionSeleccion
+  }
+
+  if(props.inyeccionSeleccion && props.inyeccionSeleccion?.length>0){
+    console.log(props.inyeccionSeleccion)
+    selectedCategories.value = props.inyeccionSeleccion
+  }
+    
+
+})
+
+
+
 
 const selectedCategories:Ref<(string|number)[]> = ref([]);
 const toggleCategorySelection = (categoriaId:string|number) => {
 
-if(!props.modoSeleccion) return
- 
-const index = selectedCategories.value.indexOf(categoriaId);
-if (index === -1) {
-  selectedCategories.value.push(categoriaId);
-} else {
-  selectedCategories.value.splice(index, 1);
-}
+  if(!props.modoSeleccion) return
+  
+  const index = selectedCategories.value.indexOf(categoriaId);
+  if (index === -1) {
+    selectedCategories.value.push(categoriaId);
+  } else {
+    selectedCategories.value.splice(index, 1);
+  }
 
-emit('selectedCategorias',selectedCategories.value)
+  emit('selectedCategorias',selectedCategories.value)
 };
 
 </script>

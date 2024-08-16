@@ -18,8 +18,8 @@ export default defineNuxtConfig({
 
   runtimeConfig:{
     public:{
-      // NUXT_API_URL:'http://localhost:3000/api',
-      NUXT_API_URL:'http://10.0.13.148:3000/api',
+      NUXT_API_URL:'http://192.168.31.119:3000/api',
+      // NUXT_API_URL:'http://10.0.13.148:3000/api',
     }
   },
   compatibilityDate: '2024-08-06',

@@ -19,8 +19,12 @@
     :content="categoria.name" 
     />
   </div>
-  <div class="hero bg-base-content">-</div>
-  
+  <div class=" bg-base-content">
+    <label class="input input-bordered flex items-center my-2">
+      <input v-model="queryTitle"   type="text" class="grow mr-2" placeholder="Search" />
+      <div class="border bg-secondary p-1 rounded-md whitespace-nowrap overflow-hidden text-ellipsis max-w-xs">{{ queryCategoria }}</div>
+    </label>
+  </div>
   
   <div class="min-h-72">
 
@@ -66,12 +70,17 @@ const { data: dataCategorias} = await useFetch<Categorias[]>(`${config.public.NU
 // cargar posts
 const queryCategoria = ref<string | undefined>(undefined);
 const { token, loggedIn } = await useJwtAuth();
+
+//query para buscar un titulo en especifico
+const queryTitle:Ref<null|string> = ref (null) 
+
 const fetchPosts = async () => {
   const url = `${config.public.NUXT_API_URL}/post${token.value ? `/?token=${token.value}` : ''}`
   console.log(url)
   const { data, status  } = await useFetch<Post[]>(url,{
     query:{
-      categoria: queryCategoria.value
+      categoria: queryCategoria.value,
+      titleSearch: queryTitle.value ? queryTitle.value : null
     },
     lazy:true
   })
@@ -88,6 +97,21 @@ watch(queryCategoria, async (newCategoria) => {
   console.log(data.value)
   dataPostsStatus.value = status.value; // Actualiza el estado
 });
+
+// Debounce para esperar a que el usuario termine de escribir
+let timeout: ReturnType<typeof setTimeout>;
+watch(queryTitle, (newQuery) => {
+  clearTimeout(timeout);
+  timeout = setTimeout(async() => {
+
+    const { data, status } = await fetchPosts();
+    dataPosts.value = data.value; // Actualiza los posts
+    console.log(data.value)
+    dataPostsStatus.value = status.value; // Actualiza el estado
+
+  }, 1000); // Espera 1s
+});
+
 
 function moverseAlPost(category:string,id:number){
   route.push(`post/${category}/${id}`)

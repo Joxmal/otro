@@ -152,10 +152,10 @@
       />
 
       <CardCategoria
-      v-for="categoria in dataCategorias" 
-      :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
-      @click="selectCategoria(categoria.name)"
-      :content="categoria.name" 
+        v-for="categoria in dataCategorias" 
+        :class="{'border-primary shadow-md shadow-blue-500': queryCategoria === categoria.name}"
+        @click="selectCategoria(categoria.name)"
+        :content="categoria.name" 
       />
     </div>
 
@@ -186,8 +186,6 @@
         </div>
       </div>
     </TransitionFade>
-
-
 
     <LazyModalAutoClose
       ref="modalEditar"
@@ -284,9 +282,6 @@ interface Categorias {
   name: string;
 }
 
-
-
-
 const { data: dataCategorias} = await useFetch<Categorias[]>(`${APIURL}/categorias`);
 
 function asignarCategoria(valor:[]){
@@ -307,7 +302,7 @@ watch(queryCategoria, async (newCategoria) => {
 
 
 watch(()=> storePost.count_reload,()=>{
-  component_getPost({})
+  component_getPost({categoria:queryCategoria.value})
 })
 
 
@@ -316,6 +311,5 @@ const dataSinglePost = ref()
 function abrirModal({postData}:{postData:Object}){
   modalEditar.value?.boton?.click()
   dataSinglePost.value = postData
-  
 }
 </script>

@@ -61,6 +61,10 @@ export const useImagenStore = defineStore('ImagenStore', {
       async eliminarImagen({id}:{id:number|string}){
         const { user, loggedIn, token } = await useJwtAuth()
 
+        console.log(`${APIURL}/post/files/${id}`)
+        console.log('Authorization: '+ `Bearer ${token.value}`)
+        
+
         try {
           const response = await fetch(`${APIURL}/post/files/${id}`, {
             method: 'DELETE',

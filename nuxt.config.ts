@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   runtimeConfig:{
     public:{
       // NUXT_API_URL:'nest_api:3000/api',
-      NUXT_API_URL:'http://localhost:3000/api',
+      NUXT_API_URL:process.env.NUXT_API_URL
       // NUXT_API_URL:'http://10.0.13.148:3000/api',
     }
   },

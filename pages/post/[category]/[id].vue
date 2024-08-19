@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import { APIURL } from "~/constants/apiUrl";
 import type { Post } from "~/types/post/postsTypes";
 
 const config = useRuntimeConfig();
@@ -47,7 +48,7 @@ const route = useRoute()
 const queryCategoria = ref<string | undefined>(undefined);
 const parrafos:any = ref()
 const fetchPosts = async () => {
-  const { data, status,error  } = await useFetch<Post>(`${config.public.NUXT_API_URL}/post/${route.params.id}`,{
+  const { data, status,error  } = await useFetch<Post>(`${APIURL}/post/${route.params.id}`,{
     query:{
       categoria: queryCategoria.value
     },

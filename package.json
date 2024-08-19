@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start-env": "cross-env NITRO_PORT=8000 node .output/server/index.mjs", 
+    "start-env": "cross-env NITRO_PORT=3001 node .output/server/index.mjs", 
     "build": "nuxt build",
-    "dev": "nuxt dev -p=8000",
+    "dev": "nuxt dev -p=3001",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

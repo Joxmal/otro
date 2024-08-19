@@ -1,7 +1,6 @@
 <template>
   <div v-if="loggedIn">
-    {{ `${config.public.NUXT_API_URL}/post/${queryCategoria}` }}
-    {{queryCategoria}}
+
   </div>
   <CarruselBasic :images="secureUrlCarrusel" class="-z-50" />
   <div class="flex flex-wrap gap-2 justify-center my-12">
@@ -46,10 +45,12 @@
 
 <script setup lang="ts">
 import { TransitionFade } from '@morev/vue-transitions';
+
 import type { Post } from "~/types/post/postsTypes";
 const route = useRouter()
 
-
+const APIURL = useRuntimeConfig().public.NUXT_API_URL
+ 
 const selectCategoria = (categoriaName: string) => {
   queryCategoria.value = categoriaName;
 };
@@ -65,7 +66,7 @@ interface Categorias {
   name: string;
 }
 
-const { data: dataCategorias} = await useFetch<Categorias[]>(`${config.public.NUXT_API_URL}/categorias`);
+const { data: dataCategorias} = await useFetch<Categorias[]>(`${APIURL}/categorias`);
 
 // cargar posts
 const queryCategoria = ref<string | undefined>(undefined);
@@ -75,7 +76,7 @@ const { token, loggedIn } = await useJwtAuth();
 const queryTitle:Ref<null|string> = ref (null) 
 
 const fetchPosts = async () => {
-  const url = `${config.public.NUXT_API_URL}/post${token.value ? `/?token=${token.value}` : ''}`
+  const url = `${APIURL}/post${token.value ? `/?token=${token.value}` : ''}`
   console.log(url)
   const { data, status  } = await useFetch<Post[]>(url,{
     query:{
@@ -121,9 +122,9 @@ function moverseAlPost(category:string,id:number){
 interface Carrusel {
   id: number;
 }
-const { data: dataCarrusel} = await useFetch<Carrusel[]>(`${config.public.NUXT_API_URL}/images/carrusel`);
+const { data: dataCarrusel} = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
 
-const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${config.public.NUXT_API_URL}/post/files/${element.id}`)
+const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${APIURL}/post/files/${element.id}`)
 
 
 

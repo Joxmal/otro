@@ -351,6 +351,4 @@ p {
 	object-fit: cover;
 }
 
-
-
 </style>

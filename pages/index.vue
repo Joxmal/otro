@@ -55,18 +55,23 @@ const selectCategoria = (categoriaName: string) => {
   queryCategoria.value = categoriaName;
 };
 
-
-
-
-
-const config = useRuntimeConfig();
-
 interface Categorias {
   id: number;
   name: string;
 }
 
-const { data: dataCategorias} = await useFetch<Categorias[]>(`${APIURL}/categorias`);
+// const dataCategorias:Ref<Categorias[] | null> = (null)
+
+const fetchCategorias = async ()=>{
+  const {data} = await useFetch<Categorias[]>(`${APIURL}/categorias`,{
+    server:false,
+    lazy:true
+  });
+  console.log(data)
+  return {data}
+}
+const {data:dataCategorias} = await fetchCategorias()
+
 
 // cargar posts
 const queryCategoria = ref<string | undefined>(undefined);

@@ -10,7 +10,7 @@
 </div>
 
 
-  <h4 class="text-6xl text-center my-4"> {{ dataPosts?.title}}</h4>
+  <h4 class="text-6xl text-center my-4 btn "> {{ dataPosts?.title}}</h4>
   <div class="">
     <div class="">
       <LazyClientOnly>

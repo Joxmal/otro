@@ -12,11 +12,11 @@ import { routeVisitors } from '~/routes/routeVisitors';
       :routesNameAdmin="routeAdmin"
       :routesName="routeVisitors"
     />
-    <NuxtLink :to="{name:'index'}">
+    <NuxtLink :to="{name:'index'}" class="my-link">
       <Icon class="hover:text-primary" name="uim:house-user" size="40"></Icon>
     </NuxtLink>
     <div v-if="loggedIn">
-      <NuxtLink NuxtLink :to="{name:'admin-dasboard'}">
+      <NuxtLink :to="{name:'admin-dasboard'}" class="my-link">
         <Icon class="hover:text-primary" name="material-symbols:admin-panel-settings" size="40"></Icon>
       </NuxtLink>
     </div>
@@ -30,3 +30,13 @@ import { routeVisitors } from '~/routes/routeVisitors';
   </div>
 </div>
 </template>
+
+
+<style>
+.my-link.router-link-active {
+  @apply text-primary font-bold;
+}
+/* .my-link.router-link-active:hover {
+  @apply text-primary font-medium;
+} */
+</style>

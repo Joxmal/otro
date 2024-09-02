@@ -83,6 +83,7 @@ const fetchPosts = async () => {
       categoria: queryCategoria.value,
       titleSearch: queryTitle.value ? queryTitle.value : null
     },
+    server:false,
     lazy:true
   })
   return {data, status}

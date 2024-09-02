@@ -22,12 +22,15 @@
 
         
         <li v-for="route in props.routesName" :key="route.name" >
-          
-          <a> <Icon class="hover:text-primary" :name="route.icon" size="40"></Icon>  {{ route.name }}</a>
+          <NuxtLink :to="{name:route?.pathName}" class="my-link">
+            <Icon class="hover:text-primary" :name="route.icon" size="40"/> {{ route.name }}
+          </NuxtLink>
         </li>
         
         <li v-if="loggedIn"  v-for="route in props.routesNameAdmin" :key="route.name" >
-          <NuxtLink :to="{name:route.pathName}"> <Icon class="hover:text-primary" :name="route.icon" size="40"></Icon>  {{ route.name }}</NuxtLink>
+          <NuxtLink :to="{name:route.pathName}" class="my-link"> 
+            <Icon class="hover:text-primary" :name="route.icon" size="40"/> {{ route.name }}
+          </NuxtLink>
         </li>
 
 

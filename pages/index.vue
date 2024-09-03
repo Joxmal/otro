@@ -67,7 +67,7 @@ const fetchCategorias = async ()=>{
     server:false,
     lazy:true
   });
-  console.log(data)
+
   return {data}
 }
 const {data:dataCategorias} = await fetchCategorias()
@@ -82,7 +82,7 @@ const queryTitle:Ref<null|string> = ref (null)
 
 const fetchPosts = async () => {
   const url = `${APIURL}/post${token.value ? `/?token=${token.value}` : ''}`
-  console.log(url)
+
   const { data, status  } = await useFetch<Post[]>(url,{
     query:{
       categoria: queryCategoria.value,
@@ -101,7 +101,7 @@ watch(queryCategoria, async (newCategoria) => {
   // Reenvía la petición cuando cambia la categoría
   const { data, status } = await fetchPosts();
   dataPosts.value = data.value; // Actualiza los posts
-  console.log(data.value)
+
   dataPostsStatus.value = status.value; // Actualiza el estado
 });
 
@@ -113,7 +113,7 @@ watch(queryTitle, (newQuery) => {
 
     const { data, status } = await fetchPosts();
     dataPosts.value = data.value; // Actualiza los posts
-    console.log(data.value)
+
     dataPostsStatus.value = status.value; // Actualiza el estado
 
   }, 1000); // Espera 1s
@@ -128,7 +128,8 @@ function moverseAlPost(category:string,id:number){
 interface Carrusel {
   id: number;
 }
-const { data: dataCarrusel} = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+// const { data: dataCarrusel} = await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+const { data: dataCarrusel} = await useAsyncData('carrusel',()=> $fetch<Carrusel[]>(`${APIURL}/images/carrusel`) )
 
 const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${APIURL}/post/files/${element.id}`)
 

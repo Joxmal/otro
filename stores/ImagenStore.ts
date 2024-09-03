@@ -45,7 +45,7 @@ export const useImagenStore = defineStore('ImagenStore', {
           });
       
           // Aquí puedes manejar la respuesta del backend si es necesario
-          const data = await response.json();
+          const data =  response
           console.log("data",data);
         } catch (error) {
           // Aquí puedes manejar los errores de la solicitud si es necesario

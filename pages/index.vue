@@ -130,30 +130,31 @@ interface Carrusel {
 }
 // const { data: dataCarrusel} = await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`);
 // const { data: dataCarrusel} = await useAsyncData('carrusel',()=> $fetch<Carrusel[]>(`${APIURL}/images/carrusel`) )
-  // const dataCarrusel =await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`)
-    async function fetchCarruselData() {
-  const { data: dataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`,{server:false,lazy:true});
-  
-  // Check if dataCarrusel is null and retry once if necessary
-  if (!dataCarrusel.value) {
-    console.warn('First fetch returned null, retrying...');
-    const { data: retryDataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`,{server:false,lazy:true});
-    return retryDataCarrusel.value; // Return the result of the retry
-  }
-  
-  return dataCarrusel.value; // Return the original data if not null
-}
 
-async function getSecureUrlCarrusel() {
-  const carruselData = await fetchCarruselData();
-  const secureUrlCarrusel = carruselData?.map((element) => `${APIURL}/post/files/${element.id}`) || [];
-  
-  return secureUrlCarrusel;
-}
 
-// Usage
-const secureUrlCarrusel = await getSecureUrlCarrusel();
-console.log(secureUrlCarrusel);
+  // const { data: dataCarrusel} = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+  // const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${APIURL}/post/files/${element.id}`)
+
+
+  const secureUrlCarrusel = ref<string[]|undefined>([]);
+
+  onMounted(async () => {
+    const { data: dataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+    if (dataCarrusel.value) {
+    }
+    const { data, status, error } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+
+      if (status.value) {
+        console.log('Cargando datos...');
+        console.log(status.value);
+        secureUrlCarrusel.value = data.value?.map(element => `${APIURL}/post/files/${element.id}`);
+
+      } else if (error.value) {
+        console.error('Error fetching data:', error.value);
+      } else {
+        console.log(data.value); // Aquí deberías ver los datos si todo está bien
+      }
+  });
 
 
 

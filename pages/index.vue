@@ -132,12 +132,12 @@ interface Carrusel {
 // const { data: dataCarrusel} = await useAsyncData('carrusel',()=> $fetch<Carrusel[]>(`${APIURL}/images/carrusel`) )
   // const dataCarrusel =await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`)
     async function fetchCarruselData() {
-  const { data: dataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+  const { data: dataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`,{server:false,lazy:true});
   
   // Check if dataCarrusel is null and retry once if necessary
   if (!dataCarrusel.value) {
     console.warn('First fetch returned null, retrying...');
-    const { data: retryDataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+    const { data: retryDataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`,{server:false,lazy:true});
     return retryDataCarrusel.value; // Return the result of the retry
   }
   

@@ -129,9 +129,31 @@ interface Carrusel {
   id: number;
 }
 // const { data: dataCarrusel} = await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`);
-const { data: dataCarrusel} = await useAsyncData('carrusel',()=> $fetch<Carrusel[]>(`${APIURL}/images/carrusel`) )
+// const { data: dataCarrusel} = await useAsyncData('carrusel',()=> $fetch<Carrusel[]>(`${APIURL}/images/carrusel`) )
+  // const dataCarrusel =await $fetch<Carrusel[]>(`${APIURL}/images/carrusel`)
+    async function fetchCarruselData() {
+  const { data: dataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+  
+  // Check if dataCarrusel is null and retry once if necessary
+  if (!dataCarrusel.value) {
+    console.warn('First fetch returned null, retrying...');
+    const { data: retryDataCarrusel } = await useFetch<Carrusel[]>(`${APIURL}/images/carrusel`);
+    return retryDataCarrusel.value; // Return the result of the retry
+  }
+  
+  return dataCarrusel.value; // Return the original data if not null
+}
 
-const secureUrlCarrusel = dataCarrusel.value?.map( (element)=> `${APIURL}/post/files/${element.id}`)
+async function getSecureUrlCarrusel() {
+  const carruselData = await fetchCarruselData();
+  const secureUrlCarrusel = carruselData?.map((element) => `${APIURL}/post/files/${element.id}`) || [];
+  
+  return secureUrlCarrusel;
+}
+
+// Usage
+const secureUrlCarrusel = await getSecureUrlCarrusel();
+console.log(secureUrlCarrusel);
 
 
 
